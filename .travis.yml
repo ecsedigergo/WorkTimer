@@ -29,3 +29,13 @@ notifications:
      - ecsedigergo@gmail.com
      on_success: always
      on_failure: always
+
+env:
+  global:
+    - MALLOC_ARENA_MAX=2
+sudo : required
+before_script:
+  - echo no | android create avd --force -n test -t android-21 --abi armeabi-v7a -s "768x1280"
+  - emulator -avd test -no-skin -no-audio -no-window &
+  - adb wait-for-device
+  - adb shell input keyevent 82 &
