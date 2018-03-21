@@ -1,7 +1,7 @@
 language: android
 android:
   components:
-     - build-tools-26.0.2
+     - build-tools-27.0.3
      - android-27
      - add-on
      - extra
@@ -38,3 +38,5 @@ before_script:
   - emulator -avd test -no-skin -no-audio -no-window &
   - adb wait-for-device
   - adb shell input keyevent 82 &
+
+script: ./gradlew :app:build :app:connectedDebugAndroidTest
