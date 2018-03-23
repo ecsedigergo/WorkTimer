@@ -32,7 +32,7 @@ notifications:
 env:
   global:
     - MALLOC_ARENA_MAX=2
-sudo : required
+sudo : false
 before_script:
   - echo no | android create avd --force -n test -t android-27 --abi google_apis/armeabi-v7a -s "768x1280"
   - emulator -avd test -no-skin -no-audio -no-window &
