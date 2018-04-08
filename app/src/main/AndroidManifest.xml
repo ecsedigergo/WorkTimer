@@ -24,7 +24,8 @@
         <activity
             android:name=".ui.workday.WorkDayScrollingActivity"
             android:label="@string/title_activity_work_day_scrolling"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".ui.about.AboutActivity"></activity>
     </application>
 
 </manifest>
