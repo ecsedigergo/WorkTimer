@@ -6,5 +6,12 @@ package hu.bme.aut.worktimer.model;
  */
 
 public interface IUser {
+    void setUserName(String name);
+
+    String getUserName();
+
+    void setPassword(String password);
+
+    String getPassword();
 
 }
