@@ -6,7 +6,7 @@ import hu.bme.aut.worktimer.network.EmployeeApi;
 import hu.bme.aut.worktimer.network.TokenApi;
 
 /**
- *
+ * Call back to network and repo for datas
  * Created by ecsedigergo on 2018. 04. 08..
  */
 
@@ -20,4 +20,6 @@ public class EmployeeInteractor {
     public EmployeeInteractor(){
         //TODO implement class for getting employee classes
     }
+
+//    Methods from Employee and token APIs
 }

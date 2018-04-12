@@ -28,11 +28,11 @@ public class NetworkModule {
         throw new UnsupportedOperationException("Not implemented yet.");
     }
 
-    @Provides
-    @Singleton
-    public TokenApi provideTokenApi(Retrofit.Builder retrofitBuilder) {
-        //TODO check correctness
-        return retrofitBuilder.baseUrl(NetworkConfig.TOKEN_ENDPOINT_ADDRESS).build().create(TokenApi.class);
-    }
+//    @Provides
+//    @Singleton
+//    public TokenApi provideTokenApi(Retrofit.Builder retrofitBuilder) {
+//        //TODO check correctness
+//        return retrofitBuilder.baseUrl(NetworkConfig.TOKEN_ENDPOINT_ADDRESS).build().create(TokenApi.class);
+//    }
 
 }

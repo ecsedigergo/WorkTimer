@@ -8,6 +8,7 @@
     <uses-permission android:name="android.permission.READ_CONTACTS" />
 
     <application
+        android:name=".WorkTimerApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -22,10 +23,7 @@
             android:label="@string/title_activity_navigation"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ui.workday.WorkDayScrollingActivity"
-            android:label="@string/title_activity_work_day_scrolling"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".ui.about.AboutActivity"></activity>
+            android:name=".ui.about.AboutActivity" />
     </application>
 
 </manifest>
