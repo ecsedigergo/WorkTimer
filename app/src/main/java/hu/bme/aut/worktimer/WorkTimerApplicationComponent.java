@@ -7,7 +7,9 @@ import hu.bme.aut.worktimer.interactor.User.UserInteractor;
 import hu.bme.aut.worktimer.network.NetworkModule;
 import hu.bme.aut.worktimer.ui.UIModule;
 import hu.bme.aut.worktimer.ui.login.LoginActivity;
+import hu.bme.aut.worktimer.ui.login.LoginPresenter;
 import hu.bme.aut.worktimer.ui.navigation.NavigationActivity;
+import hu.bme.aut.worktimer.ui.navigation.NavigationPresenter;
 
 /**
  * Dagger injecter component
@@ -17,7 +19,9 @@ import hu.bme.aut.worktimer.ui.navigation.NavigationActivity;
 @Singleton
 @Component(modules = {NetworkModule.class, UIModule.class})
 public interface WorkTimerApplicationComponent {
-    void inject(LoginActivity loginActivity);
-    void inject(NavigationActivity navigationActivity);
+//    void inject(LoginActivity loginActivity);
+//    void inject(NavigationActivity navigationActivity);
     void inject(UserInteractor userInteractor);
+    void inject(LoginPresenter loginPresenter);
+    void inject(NavigationPresenter navigationPresenter);
 }

@@ -1,16 +1,25 @@
 package hu.bme.aut.worktimer.ui.login;
 
+import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import hu.bme.aut.worktimer.WorkTimerApplication;
+import hu.bme.aut.worktimer.interactor.User.UserInteractor;
 import hu.bme.aut.worktimer.ui.Presenter;
 
 @Singleton
 public class LoginPresenter extends Presenter<ILoginScreen> {
-    void login(String name, String password){
+    @Inject
+    UserInteractor userInteractor;
 
+    @Override
+    public void attachScreen(ILoginScreen loginScreen){
+        super.attachScreen(loginScreen);
+        WorkTimerApplication.injector.inject(this);
     }
-    void register(String name, String password){
 
+    @Override
+    public void detachScreen(){
+        super.detachScreen();
     }
-
 }
