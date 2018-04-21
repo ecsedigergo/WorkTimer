@@ -34,7 +34,10 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import hu.bme.aut.worktimer.DaggerWorkTimerApplicationComponent;
 import hu.bme.aut.worktimer.R;
+import hu.bme.aut.worktimer.WorkTimerApplication;
+import hu.bme.aut.worktimer.WorkTimerApplicationComponent;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
@@ -50,10 +53,17 @@ public class LoginActivity extends AppCompatActivity implements ILoginScreen, Lo
     protected void onStart() {
         super.onStart();
         loginPresenter.attachScreen(this);
+        WorkTimerApplication.injector.inject(this);
     }
 
     @Override
-    public void login() {
+    protected void onDestroy(){
+        super.onDestroy();
+        loginPresenter.detachScreen();
+    }
+
+    @Override
+    public void navigateToMainMenu() {
 
     }
 
