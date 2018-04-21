@@ -41,16 +41,22 @@ public class UserInteractor {
         registerEvent.setUser(user);
     }
 
-    public WorkDays getAllWorkDays(User user) throws IOException {
-        return userApi.getAllWorkdays(user.getUsername()).execute().body();
+    public WorkDays getAllWorkDays(User user) {
+        WorkDays workDays = null;
+        try {
+            workDays = userApi.getAllWorkdays(user.getUsername()).execute().body();
+        } catch (IOException ioe) {
+            //TODO handle exception
+        }
+        return workDays;
     }
 
     public WorkDay getWorkDay(User user, Date checkinDate) throws IOException {
-        return userApi.getWorkDayByCheckinDate(user.getUsername(),checkinDate).execute().body();
+        return userApi.getWorkDayByCheckinDate(user.getUsername(), checkinDate).execute().body();
     }
 
-    public void addWorkDay(User user, WorkDay workDay)throws IOException{
-        userApi.addWorkDay(user.getUsername(),workDay);
+    public void addWorkDay(User user, WorkDay workDay) throws IOException {
+        userApi.addWorkDay(user.getUsername(), workDay);
     }
 
 }
