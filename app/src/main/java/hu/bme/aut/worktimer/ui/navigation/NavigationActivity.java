@@ -13,10 +13,21 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import javax.inject.Inject;
+
 import hu.bme.aut.worktimer.R;
 
 public class NavigationActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements INavigationScreen, NavigationView.OnNavigationItemSelectedListener {
+
+    @Inject
+    NavigationPresenter navigationPresenter;
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        navigationPresenter.attachScreen(this);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

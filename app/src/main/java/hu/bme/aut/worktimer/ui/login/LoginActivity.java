@@ -34,17 +34,43 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import hu.bme.aut.worktimer.DaggerWorkTimerApplicationComponent;
 import hu.bme.aut.worktimer.R;
+import hu.bme.aut.worktimer.WorkTimerApplication;
+import hu.bme.aut.worktimer.WorkTimerApplicationComponent;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
 /**
  * A login screen that offers login via email/password.
  */
-public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<Cursor> {
+public class LoginActivity extends AppCompatActivity implements ILoginScreen, LoaderCallbacks<Cursor> {
 
     @Inject
     LoginPresenter loginPresenter;
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        loginPresenter.attachScreen(this);
+        WorkTimerApplication.injector.inject(this);
+    }
+
+    @Override
+    protected void onDestroy(){
+        super.onDestroy();
+        loginPresenter.detachScreen();
+    }
+
+    @Override
+    public void navigateToMainMenu() {
+
+    }
+
+    @Override
+    public void loginFailed() {
+
+    }
 
     /**
      * Id to identity READ_CONTACTS permission request.
@@ -285,6 +311,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         mEmailView.setAdapter(adapter);
     }
+
 
 
     private interface ProfileQuery {
