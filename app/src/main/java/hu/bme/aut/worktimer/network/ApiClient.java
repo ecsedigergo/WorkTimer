@@ -44,7 +44,13 @@ public class ApiClient {
     public ApiClient(String[] authNames) {
         this();
         for(String authName : authNames) { 
-            throw new RuntimeException("auth name \"" + authName + "\" not found in available auth names");
+            Interceptor auth;
+            if (authName == "workdays_auth") { 
+                auth = new OAuth(OAuthFlow.implicit, "http://worktimer.hu", "", "write:workdays, read:workdays");
+            } else {
+                throw new RuntimeException("auth name \"" + authName + "\" not found in available auth names");
+            }
+            addAuthorization(authName, auth);
         }
     }
 

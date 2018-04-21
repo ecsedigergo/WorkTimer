@@ -32,6 +32,10 @@ paths:
       responses:
         default:
           description: "successful operation"
+      security:
+      - workdays_auth:
+        - "write:workdays"
+        - "read:workdays"
   /user/login:
     get:
       tags:
@@ -155,6 +159,10 @@ paths:
       responses:
         405:
           description: "Invalid input"
+      security:
+      - workdays_auth:
+        - "write:workdays"
+        - "read:workdays"
     get:
       tags:
       - "user"
@@ -218,4 +226,11 @@ definitions:
         type: "array"
         items:
           $ref: "#/definitions/WorkDay"
-        
+securityDefinitions:
+  workdays_auth:
+    type: "oauth2"
+    authorizationUrl: "http://worktimer.hu"
+    flow: "implicit"
+    scopes:
+      write:workdays: "add workday"
+      read:workdays: "read your workday(s)"
