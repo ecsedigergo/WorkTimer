@@ -23,6 +23,9 @@ public class NavigationActivity extends AppCompatActivity
     @Inject
     NavigationPresenter navigationPresenter;
 
+    @Inject
+
+
     @Override
     protected void onStart() {
         super.onStart();
