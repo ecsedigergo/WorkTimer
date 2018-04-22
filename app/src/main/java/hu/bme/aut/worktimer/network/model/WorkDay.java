@@ -10,7 +10,7 @@ import java.util.Date;
 import com.google.gson.annotations.SerializedName;
 
 
-@ApiModel(description = "")
+@ApiModel(description = "Handles a workday with checkin and checkout dates")
 public class WorkDay {
 
     @SerializedName("checkin")

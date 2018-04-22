@@ -14,7 +14,7 @@ import java.util.List;
 import com.google.gson.annotations.SerializedName;
 
 
-@ApiModel(description = "")
+@ApiModel(description = "Handles user specific name and password pair with a list of workday")
 public class User {
 
     @SerializedName("username")
