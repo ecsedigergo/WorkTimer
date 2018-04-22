@@ -14,6 +14,7 @@ import hu.bme.aut.worktimer.network.api.UserApi;
 import hu.bme.aut.worktimer.network.model.User;
 import hu.bme.aut.worktimer.network.model.WorkDay;
 import hu.bme.aut.worktimer.network.model.WorkDays;
+import hu.bme.aut.worktimer.repository.Repository;
 
 /**
  * Created by ecsedigergo on 2018. 04. 21..
@@ -22,6 +23,9 @@ import hu.bme.aut.worktimer.network.model.WorkDays;
 public class UserInteractor {
     @Inject
     UserApi userApi;
+
+    @Inject
+    Repository repository;
 
     public UserInteractor() {
         WorkTimerApplication.injector.inject(this);
@@ -59,4 +63,5 @@ public class UserInteractor {
         userApi.addWorkDay(user.getUsername(), workDay);
     }
 
+    //TODO convert model classes to each other (network/model, model/ORM, model/Android
 }
