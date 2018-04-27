@@ -53,11 +53,11 @@ public class LoginActivity extends AppCompatActivity implements ILoginScreen, Lo
     protected void onStart() {
         super.onStart();
         loginPresenter.attachScreen(this);
-        WorkTimerApplication.injector.inject(this);
+
     }
 
     @Override
-    protected void onDestroy(){
+    protected void onDestroy() {
         super.onDestroy();
         loginPresenter.detachScreen();
     }
@@ -68,7 +68,12 @@ public class LoginActivity extends AppCompatActivity implements ILoginScreen, Lo
     }
 
     @Override
-    public void loginFailed() {
+    public void showLoginFailed() {
+
+    }
+
+    @Override
+    public void showSuccessfulRegistration(){
 
     }
 
@@ -99,6 +104,9 @@ public class LoginActivity extends AppCompatActivity implements ILoginScreen, Lo
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        WorkTimerApplication.injector.inject(this);
+
         // Set up the login form.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
         populateAutoComplete();
@@ -311,7 +319,6 @@ public class LoginActivity extends AppCompatActivity implements ILoginScreen, Lo
 
         mEmailView.setAdapter(adapter);
     }
-
 
 
     private interface ProfileQuery {

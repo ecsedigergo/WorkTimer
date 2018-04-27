@@ -13,13 +13,21 @@ public class LoginPresenter extends Presenter<ILoginScreen> {
     UserInteractor userInteractor;
 
     @Override
-    public void attachScreen(ILoginScreen loginScreen){
+    public void attachScreen(ILoginScreen loginScreen) {
         super.attachScreen(loginScreen);
         WorkTimerApplication.injector.inject(this);
     }
 
     @Override
-    public void detachScreen(){
+    public void detachScreen() {
         super.detachScreen();
+    }
+
+    public void login(final String username, final String password) {
+
+    }
+
+    public void register(final String username, final String password) {
+
     }
 }
