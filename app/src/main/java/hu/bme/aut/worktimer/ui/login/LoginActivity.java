@@ -3,6 +3,7 @@ package hu.bme.aut.worktimer.ui.login;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
@@ -38,6 +39,7 @@ import hu.bme.aut.worktimer.DaggerWorkTimerApplicationComponent;
 import hu.bme.aut.worktimer.R;
 import hu.bme.aut.worktimer.WorkTimerApplication;
 import hu.bme.aut.worktimer.WorkTimerApplicationComponent;
+import hu.bme.aut.worktimer.ui.navigation.NavigationActivity;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
@@ -127,6 +129,14 @@ public class LoginActivity extends AppCompatActivity implements ILoginScreen, Lo
         mEmailSignInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
+                attemptLogin();
+            }
+        });
+
+        Button mEmailRegisterButton = (Button) findViewById(R.id.email_register_button);
+        mEmailRegisterButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
                 attemptLogin();
             }
         });
@@ -349,6 +359,7 @@ public class LoginActivity extends AppCompatActivity implements ILoginScreen, Lo
         protected Boolean doInBackground(Void... params) {
             // TODO: attempt authentication against a network service.
 
+
             try {
                 // Simulate network access.
                 Thread.sleep(2000);
@@ -374,7 +385,9 @@ public class LoginActivity extends AppCompatActivity implements ILoginScreen, Lo
             showProgress(false);
 
             if (success) {
-                finish();
+                Intent mainIntent = new Intent(LoginActivity.this, NavigationActivity.class );
+                startActivity(mainIntent);
+                //finish();
             } else {
                 mPasswordView.setError(getString(R.string.error_incorrect_password));
                 mPasswordView.requestFocus();
