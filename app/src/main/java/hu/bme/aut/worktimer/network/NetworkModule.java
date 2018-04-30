@@ -1,38 +1,39 @@
 package hu.bme.aut.worktimer.network;
 
-import android.support.annotation.RestrictTo;
-
-import retrofit2.Retrofit;
-
 import javax.inject.Singleton;
 
-        import dagger.Module;
-        import dagger.Provides;
-        import retrofit2.Retrofit;
-        import retrofit2.converter.gson.GsonConverterFactory;
+import dagger.Module;
+import dagger.Provides;
+import hu.bme.aut.worktimer.network.api.UserApi;
+import okhttp3.OkHttpClient;
+import retrofit2.GsonConverterFactory;
+import retrofit2.Retrofit;
 
 @Module
 public class NetworkModule {
     @Provides
     @Singleton
-    public Retrofit.Builder provideRetrofit() {
-        return new Retrofit.Builder()
-                .addConverterFactory(GsonConverterFactory.create());
+    public Retrofit provideRetrofit(OkHttpClient client) {
+        return new Retrofit.Builder().client(client).baseUrl(NetworkConfig.SERVICE_ENDPOINT)
+                .addConverterFactory(GsonConverterFactory.create()).build();
 
     }
 
     @Provides
     @Singleton
-    public EmployeeApi provideEmployeeApi(Retrofit.Builder builder){
-        //TODO provide an employee
-        throw new UnsupportedOperationException("Not implemented yet.");
+    public UserApi provideUserApi(){
+        return new ApiClient().createService(UserApi.class);
     }
 
     @Provides
     @Singleton
-    public TokenApi provideTokenApi(Retrofit.Builder retrofitBuilder) {
-        //TODO check correctness
-        return retrofitBuilder.baseUrl(NetworkConfig.TOKEN_ENDPOINT_ADDRESS).build().create(TokenApi.class);
+    public OkHttpClient provideOkHttpClient(OkHttpClient.Builder builder){
+        return builder.build();
     }
 
+    @Provides
+    @Singleton
+    public OkHttpClient.Builder provideOkHttpClientBuilder(){
+        return new OkHttpClient().newBuilder();
+    }
 }
