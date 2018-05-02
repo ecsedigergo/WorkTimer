@@ -1,4 +1,5 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -29,6 +30,22 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/icon_content_desc"
+                android:scaleType="fitCenter"
+                android:visibility="visible"
+                app:srcCompat="@mipmap/ic_worktimer" />
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="WorkTimer application"
+                android:textAlignment="center"
+                android:textSize="24sp" />
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
@@ -69,9 +86,21 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
+                android:background="@color/colorPrimary"
                 android:text="@string/action_sign_in"
+                android:textColor="@android:color/background_light"
                 android:textStyle="bold" />
 
+            <Button
+                android:id="@+id/email_register_button"
+                style="?android:textAppearanceSmall"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:background="@color/colorPrimary"
+                android:text="@string/action_register"
+                android:textColor="@android:color/background_light"
+                android:textStyle="bold" />
         </LinearLayout>
     </ScrollView>
 </LinearLayout>
