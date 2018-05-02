@@ -2,10 +2,14 @@ package hu.bme.aut.worktimer.ui;
 
 import android.content.Context;
 
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
+
 import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import hu.bme.aut.worktimer.di.Network;
 import hu.bme.aut.worktimer.ui.login.LoginPresenter;
 import hu.bme.aut.worktimer.ui.navigation.NavigationPresenter;
 
@@ -32,5 +36,9 @@ public class UIModule {
     @Singleton
     public NavigationPresenter provideNavigation(){ return new NavigationPresenter(); }
 
+    @Provides
+    @Singleton
+    @Network
+    public Executor provideNetworkExecutor(){ return Executors.newFixedThreadPool(1);}
 
 }
