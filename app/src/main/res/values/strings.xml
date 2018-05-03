@@ -25,4 +25,11 @@
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
+
+
+    <!--About page infos-->
+    <string name="application_infos">App version v. 1.0 \n\n
+    2018 \n
+    Mobilszoftver-laboratórium \n\n
+    Ecsedi Gergő</string>
 </resources>

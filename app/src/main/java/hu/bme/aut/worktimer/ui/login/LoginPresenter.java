@@ -29,7 +29,9 @@ public class LoginPresenter extends Presenter<ILoginScreen> {
     public void attachScreen(ILoginScreen loginScreen) {
         super.attachScreen(loginScreen);
         WorkTimerApplication.injector.inject(this);
-        EventBus.getDefault().register(this);
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
     }
 
     @Override
