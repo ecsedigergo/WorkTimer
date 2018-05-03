@@ -8,6 +8,8 @@ import hu.bme.aut.worktimer.interactor.User.UserInteractor;
 import hu.bme.aut.worktimer.network.NetworkModule;
 import hu.bme.aut.worktimer.repository.RepositoryModule;
 import hu.bme.aut.worktimer.ui.UIModule;
+import hu.bme.aut.worktimer.ui.about.AboutActivity;
+import hu.bme.aut.worktimer.ui.about.AboutPresenter;
 import hu.bme.aut.worktimer.ui.login.LoginActivity;
 import hu.bme.aut.worktimer.ui.login.LoginPresenter;
 import hu.bme.aut.worktimer.ui.navigation.NavigationActivity;
@@ -25,11 +27,15 @@ public interface WorkTimerApplicationComponent {
 
     void inject(NavigationActivity navigationActivity);
 
+    void inject(AboutActivity aboutActivity);
+
     void inject(UserInteractor userInteractor);
 
     void inject(LoginPresenter loginPresenter);
 
     void inject(NavigationPresenter navigationPresenter);
+
+    void inject(AboutPresenter aboutPresenter);
 
     void inject(WorkTimerApplication workTimerApplication);
 }

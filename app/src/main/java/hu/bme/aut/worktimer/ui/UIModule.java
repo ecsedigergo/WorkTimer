@@ -10,6 +10,7 @@ import javax.inject.Singleton;
 import dagger.Module;
 import dagger.Provides;
 import hu.bme.aut.worktimer.di.Network;
+import hu.bme.aut.worktimer.ui.about.AboutPresenter;
 import hu.bme.aut.worktimer.ui.login.LoginPresenter;
 import hu.bme.aut.worktimer.ui.navigation.NavigationPresenter;
 
@@ -35,6 +36,10 @@ public class UIModule {
     @Provides
     @Singleton
     public NavigationPresenter provideNavigation(){ return new NavigationPresenter(); }
+
+    @Provides
+    @Singleton
+    public AboutPresenter provideAboutPresenter(){ return new AboutPresenter();}
 
     @Provides
     @Singleton
