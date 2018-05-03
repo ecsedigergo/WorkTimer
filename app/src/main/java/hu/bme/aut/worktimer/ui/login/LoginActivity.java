@@ -89,11 +89,9 @@ public class LoginActivity extends AppCompatActivity implements ILoginScreen, Lo
     @Override
     public void navigateToMainMenu(String name) {
         Intent mainIntent = new Intent(LoginActivity.this, NavigationActivity.class);
-
-        mainIntent.putExtra(USEREMAIL,name);
-
+        mainIntent.putExtra(USEREMAIL, name);
         startActivity(mainIntent);
-
+        finish();
     }
 
     @Override
@@ -411,7 +409,6 @@ public class LoginActivity extends AppCompatActivity implements ILoginScreen, Lo
         protected void onPostExecute(final Boolean success) {
             mAuthTask = null;
             showProgress(false);
-
 
 
             if (success) {

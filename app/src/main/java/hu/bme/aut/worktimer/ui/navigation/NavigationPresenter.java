@@ -9,6 +9,7 @@ import hu.bme.aut.worktimer.di.Network;
 import hu.bme.aut.worktimer.interactor.User.UserInteractor;
 import hu.bme.aut.worktimer.network.model.User;
 import hu.bme.aut.worktimer.ui.Presenter;
+import hu.bme.aut.worktimer.ui.login.LoginActivity;
 
 /**
  * Navigation presenter for receiving information on sidebar
@@ -32,14 +33,26 @@ public class NavigationPresenter extends Presenter<INavigationScreen> {
 //        });
 //    }
 
+
+    public void logout() {
+        userInteractor.logout(setupUser(LoginActivity.USEREMAIL, "*"));
+    }
+
+    private User setupUser(final String username, final String password) {
+        User u = new User();
+        u.setUsername(username);
+        u.setPassword(password);
+        return u;
+    }
+
     @Override
-    public void attachScreen(INavigationScreen navigationScreen){
+    public void attachScreen(INavigationScreen navigationScreen) {
         super.attachScreen(navigationScreen);
         WorkTimerApplication.injector.inject(this);
     }
 
     @Override
-    public void detachScreen(){
+    public void detachScreen() {
         super.detachScreen();
     }
 }

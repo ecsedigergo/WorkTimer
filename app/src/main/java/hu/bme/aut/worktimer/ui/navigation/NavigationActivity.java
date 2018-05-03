@@ -33,11 +33,11 @@ public class NavigationActivity extends AppCompatActivity
 
     //private String userName = "admin";
 
-    private String mUserEmail = "admin@admin.com";
-    
+    public String mUserEmail = "admin@admin.com";
+
     @Inject
     NavigationPresenter navigationPresenter;
-    
+
     @Override
     protected void onStart() {
         super.onStart();
@@ -52,7 +52,9 @@ public class NavigationActivity extends AppCompatActivity
         super.onDestroy();
         navigationPresenter.detachScreen();
     }
+
     Calendar myCalendar = Calendar.getInstance();
+
     private void addWorkDay() {
         String myFormat = "MM/dd/yy";
         SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
@@ -152,18 +154,26 @@ public class NavigationActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_checks) {
-            // Handle the camera action
-        } else if (id == R.id.nav_checks) {
-
+            item.setChecked(false);
+            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+            drawer.closeDrawer(GravityCompat.START);
+            return false;
         } else if (id == R.id.nav_about) {
             navigateToAboutPage();
         } else if (id == R.id.nav_logout) {
-
+            navigationPresenter.logout();
+            navigateToLoginPage();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void navigateToLoginPage() {
+        Intent loginIntent = new Intent(NavigationActivity.this, LoginActivity.class);
+        startActivity(loginIntent);
+        finish();
     }
 
     private void navigateToAboutPage() {
