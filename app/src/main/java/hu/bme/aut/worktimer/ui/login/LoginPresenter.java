@@ -68,7 +68,7 @@ public class LoginPresenter extends Presenter<ILoginScreen> {
             }
         } else if (screen != null) {
             if (event.getCode() == 200) {
-                screen.showLoginSuccessful();
+                screen.showLoginSuccessful(event.getUser().getUsername());
             } else {
                 screen.showLoginFailed();
             }

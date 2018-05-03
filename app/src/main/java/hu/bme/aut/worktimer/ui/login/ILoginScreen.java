@@ -6,5 +6,5 @@ public interface ILoginScreen {
     void showLoginFailed();
     void showSuccessfulRegistration();
     void showNetworkError(String message);
-    void showLoginSuccessful();
+    void showLoginSuccessful(String username);
 }

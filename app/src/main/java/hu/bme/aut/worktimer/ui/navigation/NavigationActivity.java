@@ -1,5 +1,6 @@
 package hu.bme.aut.worktimer.ui.navigation;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -16,19 +17,21 @@ import android.view.MenuItem;
 import javax.inject.Inject;
 
 import hu.bme.aut.worktimer.R;
+import hu.bme.aut.worktimer.ui.login.LoginActivity;
 
 public class NavigationActivity extends AppCompatActivity
         implements INavigationScreen, NavigationView.OnNavigationItemSelectedListener {
 
+    //private String userName = "admin";
+
     @Inject
     NavigationPresenter navigationPresenter;
-
-    @Inject
-
 
     @Override
     protected void onStart() {
         super.onStart();
+
+        //userName = getIntent().getStringExtra(LoginActivity.USERNAME);
         navigationPresenter.attachScreen(this);
     }
 

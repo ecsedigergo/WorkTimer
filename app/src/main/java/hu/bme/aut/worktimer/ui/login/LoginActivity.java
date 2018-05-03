@@ -3,6 +3,7 @@ package hu.bme.aut.worktimer.ui.login;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
@@ -31,6 +32,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -54,12 +56,28 @@ public class LoginActivity extends AppCompatActivity implements ILoginScreen, Lo
 //    @Inject
 //    Repository repository;
 
+    public static final String USERNAME = "USERNAME";
+    public String userName = "admin";
+
     @Override
     protected void onStart() {
         super.onStart();
         loginPresenter.attachScreen(this);
-
     }
+
+
+    private void writeUserDetailsToFile(String user) {
+        FileOutputStream fos;
+        try {
+            fos = openFileOutput("userDetails", Context.MODE_PRIVATE);
+            fos.write(user.getBytes());
+            fos.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+            Toast.makeText(getApplicationContext(), "Error saving user details", Toast.LENGTH_LONG).show();
+        }
+    }
+
 
     @Override
     protected void onDestroy() {
@@ -70,6 +88,7 @@ public class LoginActivity extends AppCompatActivity implements ILoginScreen, Lo
     @Override
     public void navigateToMainMenu() {
         Intent mainIntent = new Intent(LoginActivity.this, NavigationActivity.class);
+        //mainIntent.putExtra(USERNAME, userName);
         startActivity(mainIntent);
 
     }
@@ -90,8 +109,10 @@ public class LoginActivity extends AppCompatActivity implements ILoginScreen, Lo
     }
 
     @Override
-    public void showLoginSuccessful() {
+    public void showLoginSuccessful(String username) {
         Toast.makeText(getApplicationContext(), "Login was successful", Toast.LENGTH_LONG).show();
+        //userName = username;
+        //writeUserDetailsToFile(username);
     }
 
     /**
@@ -375,12 +396,12 @@ public class LoginActivity extends AppCompatActivity implements ILoginScreen, Lo
         @Override
         protected Boolean doInBackground(Void... params) {
             // attempt authentication against a network service.
-            loginPresenter.login(mEmail, mPassword);
+            //loginPresenter.login(mEmail, mPassword);
 
 
             // register the new account here.
-            loginPresenter.register(mEmail, mPassword);
-            return false;
+            //loginPresenter.register(mEmail, mPassword);
+            return true;
         }
 
         @Override
