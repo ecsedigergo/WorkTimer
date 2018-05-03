@@ -16,14 +16,13 @@ import android.view.MenuItem;
 import javax.inject.Inject;
 
 import hu.bme.aut.worktimer.R;
+import hu.bme.aut.worktimer.WorkTimerApplication;
 
 public class NavigationActivity extends AppCompatActivity
         implements INavigationScreen, NavigationView.OnNavigationItemSelectedListener {
 
     @Inject
     NavigationPresenter navigationPresenter;
-
-    @Inject
 
 
     @Override
@@ -33,11 +32,19 @@ public class NavigationActivity extends AppCompatActivity
     }
 
     @Override
+    protected void onDestroy(){
+        super.onDestroy();
+        navigationPresenter.detachScreen();
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_navigation);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        WorkTimerApplication.injector.inject(this);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
