@@ -25,15 +25,18 @@ import hu.bme.aut.worktimer.ui.login.LoginActivity;
 public class NavigationActivity extends AppCompatActivity
         implements INavigationScreen, NavigationView.OnNavigationItemSelectedListener {
 
-    @Inject
-    NavigationPresenter navigationPresenter;
-
+    //private String userName = "admin";
 
     private String mUserEmail = "admin@admin.com";
-
+    
+    @Inject
+    NavigationPresenter navigationPresenter;
+    
     @Override
     protected void onStart() {
         super.onStart();
+
+        //userName = getIntent().getStringExtra(LoginActivity.USERNAME);
         navigationPresenter.attachScreen(this);
 
     }

@@ -8,7 +8,7 @@ import hu.bme.aut.worktimer.interactor.User.UserInteractor;
 
 @Module
 public class InteractorModule {
-    @Singleton
+    //@Singleton
     @Provides
     public UserInteractor provideUserInteractor(){return new UserInteractor();}
 }
