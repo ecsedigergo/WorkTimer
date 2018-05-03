@@ -1,5 +1,6 @@
 package hu.bme.aut.worktimer.ui.navigation;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -12,11 +13,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 import javax.inject.Inject;
 
 import hu.bme.aut.worktimer.R;
 import hu.bme.aut.worktimer.WorkTimerApplication;
+import hu.bme.aut.worktimer.ui.about.AboutActivity;
+import hu.bme.aut.worktimer.ui.login.LoginActivity;
 
 public class NavigationActivity extends AppCompatActivity
         implements INavigationScreen, NavigationView.OnNavigationItemSelectedListener {
@@ -25,14 +29,17 @@ public class NavigationActivity extends AppCompatActivity
     NavigationPresenter navigationPresenter;
 
 
+    private String mUserEmail = "admin@admin.com";
+
     @Override
     protected void onStart() {
         super.onStart();
         navigationPresenter.attachScreen(this);
+
     }
 
     @Override
-    protected void onDestroy(){
+    protected void onDestroy() {
         super.onDestroy();
         navigationPresenter.detachScreen();
     }
@@ -46,7 +53,7 @@ public class NavigationActivity extends AppCompatActivity
 
         WorkTimerApplication.injector.inject(this);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.addWD);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -63,6 +70,15 @@ public class NavigationActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        mUserEmail = getIntent().getStringExtra(LoginActivity.USEREMAIL);
+        if (navigationView.getHeaderCount() == 1) {
+            View headerView = navigationView.getHeaderView(0);
+            TextView t = (TextView) headerView.findViewById(R.id.textViewOnNavEmail);
+            t.setText(mUserEmail);
+            TextView navigationNameText = (TextView) headerView.findViewById(R.id.textViewOnNavName);
+            navigationNameText.setText(mUserEmail.substring(0, mUserEmail.indexOf('@')));
+        }
     }
 
     @Override
@@ -103,22 +119,23 @@ public class NavigationActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
+        if (id == R.id.nav_checks) {
             // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
+        } else if (id == R.id.nav_checks) {
 
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
+        } else if (id == R.id.nav_about) {
+            navigateToAboutPage();
+        } else if (id == R.id.nav_logout) {
 
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void navigateToAboutPage() {
+        Intent aboutIntent = new Intent(NavigationActivity.this, AboutActivity.class);
+        startActivity(aboutIntent);
     }
 }

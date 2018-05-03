@@ -54,6 +54,8 @@ public class LoginActivity extends AppCompatActivity implements ILoginScreen, Lo
 //    @Inject
 //    Repository repository;
 
+    public static final String USEREMAIL = "USEREMAIL";
+
     @Override
     protected void onStart() {
         super.onStart();
@@ -68,8 +70,9 @@ public class LoginActivity extends AppCompatActivity implements ILoginScreen, Lo
     }
 
     @Override
-    public void navigateToMainMenu() {
+    public void navigateToMainMenu(String name) {
         Intent mainIntent = new Intent(LoginActivity.this, NavigationActivity.class);
+        mainIntent.putExtra(USEREMAIL,name);
         startActivity(mainIntent);
 
     }
@@ -388,16 +391,18 @@ public class LoginActivity extends AppCompatActivity implements ILoginScreen, Lo
             mAuthTask = null;
             showProgress(false);
 
+
+
             if (success) {
-                navigateToMainMenu();
+                navigateToMainMenu(mEmail);
                 //finish();
             }
-//            else if (ERROR_HAPPENED){
-//                ERROR_HAPPENED = false;
-//            }else {
-//                mPasswordView.setError(getString(R.string.error_incorrect_password));
-//                mPasswordView.requestFocus();
-//            }
+////            else if (ERROR_HAPPENED){
+////                ERROR_HAPPENED = false;
+////            }else {
+////                mPasswordView.setError(getString(R.string.error_incorrect_password));
+////                mPasswordView.requestFocus();
+////            }
         }
 
         @Override
