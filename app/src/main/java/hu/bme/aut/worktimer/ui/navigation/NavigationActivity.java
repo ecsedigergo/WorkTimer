@@ -1,5 +1,6 @@
 package hu.bme.aut.worktimer.ui.navigation;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -18,6 +19,7 @@ import javax.inject.Inject;
 
 import hu.bme.aut.worktimer.R;
 import hu.bme.aut.worktimer.WorkTimerApplication;
+import hu.bme.aut.worktimer.ui.about.AboutActivity;
 import hu.bme.aut.worktimer.ui.login.LoginActivity;
 
 public class NavigationActivity extends AppCompatActivity
@@ -51,7 +53,7 @@ public class NavigationActivity extends AppCompatActivity
 
         WorkTimerApplication.injector.inject(this);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.addWD);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -122,7 +124,7 @@ public class NavigationActivity extends AppCompatActivity
         } else if (id == R.id.nav_checks) {
 
         } else if (id == R.id.nav_about) {
-
+            navigateToAboutPage();
         } else if (id == R.id.nav_logout) {
 
         }
@@ -130,5 +132,10 @@ public class NavigationActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void navigateToAboutPage() {
+        Intent aboutIntent = new Intent(NavigationActivity.this, AboutActivity.class);
+        startActivity(aboutIntent);
     }
 }
