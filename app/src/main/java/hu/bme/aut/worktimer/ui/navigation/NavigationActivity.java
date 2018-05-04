@@ -66,12 +66,13 @@ public class NavigationActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_navigation);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarOnMain);
         setSupportActionBar(toolbar);
 
         WorkTimerApplication.injector.inject(this);
 
-
+        //set datepicker
         DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
@@ -105,6 +106,7 @@ public class NavigationActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        //set username email and name on navigation tab bar
         mUserEmail = getIntent().getStringExtra(LoginActivity.USEREMAIL);
         if (navigationView.getHeaderCount() == 1) {
             View headerView = navigationView.getHeaderView(0);

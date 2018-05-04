@@ -397,7 +397,7 @@ public class LoginActivity extends AppCompatActivity implements ILoginScreen, Lo
         @Override
         protected Boolean doInBackground(Void... params) {
             // attempt authentication against a network service.
-            //loginPresenter.login(mEmail, mPassword);
+            loginPresenter.login(mEmail, mPassword);
 
 
             // register the new account here.
