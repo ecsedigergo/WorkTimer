@@ -15,7 +15,7 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
-    <string name="icon_content_desc">WorkTimer welcome icon</string>
+    <string name="icon_content_desc">WorkTimer</string>
     <string name="visible" type="id"/>
     <string name="masked" type="id"/>
     <!--String related to MainActivity-->

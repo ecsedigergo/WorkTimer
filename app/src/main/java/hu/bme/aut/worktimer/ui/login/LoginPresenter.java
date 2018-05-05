@@ -11,8 +11,9 @@ import javax.inject.Singleton;
 
 import hu.bme.aut.worktimer.WorkTimerApplication;
 import hu.bme.aut.worktimer.di.Network;
-import hu.bme.aut.worktimer.interactor.User.UserInteractor;
-import hu.bme.aut.worktimer.interactor.User.event.auth.LoginEvent;
+import hu.bme.aut.worktimer.interactor.user.UserInteractor;
+import hu.bme.aut.worktimer.interactor.user.event.auth.LoginEvent;
+import hu.bme.aut.worktimer.interactor.user.event.auth.RegisterEvent;
 import hu.bme.aut.worktimer.network.model.User;
 import hu.bme.aut.worktimer.ui.Presenter;
 
@@ -25,19 +26,22 @@ public class LoginPresenter extends Presenter<ILoginScreen> {
     @Network
     Executor executor;
 
+    @Inject
+    EventBus bus;
+
     @Override
     public void attachScreen(ILoginScreen loginScreen) {
         super.attachScreen(loginScreen);
         WorkTimerApplication.injector.inject(this);
-        if (!EventBus.getDefault().isRegistered(this)) {
-            EventBus.getDefault().register(this);
+        if (!bus.isRegistered(this)) {
+            bus.register(this);
         }
     }
 
     @Override
     public void detachScreen() {
         super.detachScreen();
-        EventBus.getDefault().unregister(this);
+        bus.unregister(this);
     }
 
     public void login(final String username, final String password) {
@@ -51,7 +55,13 @@ public class LoginPresenter extends Presenter<ILoginScreen> {
     }
 
     public void register(final String username, final String password) {
-        userInteractor.register(setupUser(username, password));
+        executor.execute(new Runnable() {
+            @Override
+            public void run() {
+                userInteractor.register(setupUser(username, password));
+            }
+        });
+
     }
 
     private User setupUser(final String username, final String password) {
@@ -59,6 +69,22 @@ public class LoginPresenter extends Presenter<ILoginScreen> {
         u.setUsername(username);
         u.setPassword(password);
         return u;
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(final RegisterEvent event) {
+        if (event.getThrowable() != null) {
+            event.getThrowable().printStackTrace();
+            if (screen != null) {
+                screen.showNetworkError(event.getThrowable().getMessage());
+            }
+        } else if (screen != null) {
+            if (event.getCode() == 200) {
+                screen.showRegisterSuccessful(event.getUser().getUsername());
+            } else {
+                screen.showLoginFailed();
+            }
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

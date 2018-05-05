@@ -1,4 +1,4 @@
-package hu.bme.aut.worktimer.interactor.User.event;
+package hu.bme.aut.worktimer.interactor.user.event;
 
 import hu.bme.aut.worktimer.network.model.User;
 import hu.bme.aut.worktimer.utils.NetworkEvent;

@@ -1,5 +1,7 @@
 package hu.bme.aut.worktimer.model.orm;
 
+import com.orm.SugarRecord;
+import com.orm.dsl.Ignore;
 import com.orm.dsl.Table;
 
 import java.util.ArrayList;
@@ -10,15 +12,13 @@ import java.util.List;
  * Created by ecsedigergo on 2018. 04. 22..
  */
 @Table
-public class UserORMModel {
+public class UserORMModel extends SugarRecord {
     private String username;
     private String password;
+    @Ignore
     private List<WorkDayORMModel> workdays;
 
     public UserORMModel() {
-        this.username = "admin";
-        this.password = "admin";
-        this.workdays = new ArrayList<>();
     }
 
     public UserORMModel(String username, String password, List<WorkDayORMModel> workdays) {
@@ -50,4 +50,5 @@ public class UserORMModel {
     public void setWorkdays(List<WorkDayORMModel> workdays) {
         this.workdays = workdays;
     }
+
 }

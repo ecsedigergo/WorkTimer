@@ -40,6 +40,7 @@ import javax.inject.Inject;
 
 import hu.bme.aut.worktimer.R;
 import hu.bme.aut.worktimer.WorkTimerApplication;
+import hu.bme.aut.worktimer.repository.Repository;
 import hu.bme.aut.worktimer.ui.navigation.NavigationActivity;
 
 import static android.Manifest.permission.READ_CONTACTS;
@@ -47,36 +48,15 @@ import static android.Manifest.permission.READ_CONTACTS;
 /**
  * A login screen that offers login via email/password.
  */
-public class LoginActivity extends AppCompatActivity implements ILoginScreen, LoaderCallbacks<Cursor> {
-
+public class LoginActivity extends AppCompatActivity implements ILoginScreen {
     @Inject
     LoginPresenter loginPresenter;
-
-//    TODO Check if its feasible here
-//    @Inject
-//    Repository repository;
-
-
-    public static final String USEREMAIL = "USEREMAIL";
 
 
     @Override
     protected void onStart() {
         super.onStart();
         loginPresenter.attachScreen(this);
-    }
-
-
-    private void writeUserDetailsToFile(String user) {
-        FileOutputStream fos;
-        try {
-            fos = openFileOutput("userDetails", Context.MODE_PRIVATE);
-            fos.write(user.getBytes());
-            fos.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-            Toast.makeText(getApplicationContext(), "Error saving user details", Toast.LENGTH_LONG).show();
-        }
     }
 
 
@@ -87,56 +67,36 @@ public class LoginActivity extends AppCompatActivity implements ILoginScreen, Lo
     }
 
     @Override
-    public void navigateToMainMenu(String name) {
-        Intent mainIntent = new Intent(LoginActivity.this, NavigationActivity.class);
-
-        mainIntent.putExtra(USEREMAIL,name);
-
-        startActivity(mainIntent);
-
-    }
-
-    @Override
     public void showLoginFailed() {
-        Toast.makeText(getApplicationContext(), "Login failed", Toast.LENGTH_LONG).show();
-    }
-
-    @Override
-    public void showSuccessfulRegistration() {
-        Toast.makeText(getApplicationContext(), "Registration was successful", Toast.LENGTH_LONG).show();
+        Toast.makeText(getApplicationContext(), "Invalid username or password", Toast.LENGTH_LONG).show();
+        showProgress(false);
     }
 
     @Override
     public void showNetworkError(String message) {
-        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
+        Toast.makeText(getApplicationContext(), "Network error: " + message, Toast.LENGTH_LONG).show();
+        showProgress(false);
     }
 
     @Override
     public void showLoginSuccessful(String username) {
-        Toast.makeText(getApplicationContext(), "Login was successful", Toast.LENGTH_LONG).show();
-        //userName = username;
-        //writeUserDetailsToFile(username);
+        Intent mainIntent = new Intent(this, NavigationActivity.class);
+        mainIntent.putExtra(NavigationActivity.EXTRA_USERNAME, username);
+        startActivity(mainIntent);
+        finish();
     }
 
-    /**
-     * Id to identity READ_CONTACTS permission request.
-     */
-    private static final int REQUEST_READ_CONTACTS = 0;
-
-    /**
-     * A dummy authentication store containing known user names and passwords.
-     * TODO: remove after connecting to a real authentication system.
-     */
-    private static final String[] DUMMY_CREDENTIALS = new String[]{
-            "foo@example.com:hello", "bar@example.com:world"
-    };
-    /**
-     * Keep track of the login task to ensure we can cancel it if requested.
-     */
-    private UserLoginTask mAuthTask = null;
+    @Override
+    public void showRegisterSuccessful(String username) {
+        Toast.makeText(getApplicationContext(), "Registration successful", Toast.LENGTH_LONG).show();
+        Intent mainIntent = new Intent(this, NavigationActivity.class);
+        mainIntent.putExtra(NavigationActivity.EXTRA_USERNAME, username);
+        startActivity(mainIntent);
+        finish();
+    }
 
     // UI references.
-    private AutoCompleteTextView mEmailView;
+    private TextView mEmailView;
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
@@ -149,8 +109,7 @@ public class LoginActivity extends AppCompatActivity implements ILoginScreen, Lo
         WorkTimerApplication.injector.inject(this);
 
         // Set up the login form.
-        mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
-        populateAutoComplete();
+        mEmailView = (TextView) findViewById(R.id.email);
 
         mPasswordView = (EditText) findViewById(R.id.password);
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -176,7 +135,7 @@ public class LoginActivity extends AppCompatActivity implements ILoginScreen, Lo
         mEmailRegisterButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                attemptLogin();
+                attemptRegister();
             }
         });
 
@@ -184,49 +143,21 @@ public class LoginActivity extends AppCompatActivity implements ILoginScreen, Lo
         mProgressView = findViewById(R.id.login_progress);
     }
 
-    private void populateAutoComplete() {
-        if (!mayRequestContacts()) {
+    private void attemptRegister() {
+        if (mProgressView.getVisibility() == View.VISIBLE) {
+            //already logging in
             return;
         }
-
-        getLoaderManager().initLoader(0, null, this);
-    }
-
-    private boolean mayRequestContacts() {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-            return true;
-        }
-        if (checkSelfPermission(READ_CONTACTS) == PackageManager.PERMISSION_GRANTED) {
-            return true;
-        }
-        if (shouldShowRequestPermissionRationale(READ_CONTACTS)) {
-            Snackbar.make(mEmailView, R.string.permission_rationale, Snackbar.LENGTH_INDEFINITE)
-                    .setAction(android.R.string.ok, new View.OnClickListener() {
-                        @Override
-                        @TargetApi(Build.VERSION_CODES.M)
-                        public void onClick(View v) {
-                            requestPermissions(new String[]{READ_CONTACTS}, REQUEST_READ_CONTACTS);
-                        }
-                    });
+        View focusview = checkValidInput();
+        if (focusview != null) {
+            focusview.requestFocus();
         } else {
-            requestPermissions(new String[]{READ_CONTACTS}, REQUEST_READ_CONTACTS);
-        }
-        return false;
-    }
-
-    /**
-     * Callback received when a permissions request has been completed.
-     */
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
-                                           @NonNull int[] grantResults) {
-        if (requestCode == REQUEST_READ_CONTACTS) {
-            if (grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                populateAutoComplete();
-            }
+            showProgress(true);
+            String email = mEmailView.getText().toString();
+            String password = mPasswordView.getText().toString();
+            loginPresenter.register(email, password);
         }
     }
-
 
     /**
      * Attempts to sign in or register the account specified by the login form.
@@ -234,10 +165,29 @@ public class LoginActivity extends AppCompatActivity implements ILoginScreen, Lo
      * errors are presented and no actual login attempt is made.
      */
     private void attemptLogin() {
-        if (mAuthTask != null) {
+        if (mProgressView.getVisibility() == View.VISIBLE) {
+            //already logging in
             return;
         }
 
+        View focusview = checkValidInput();
+        if (focusview != null) {
+            focusview.requestFocus();
+        } else {
+            showProgress(true);
+            String email = mEmailView.getText().toString();
+            String password = mPasswordView.getText().toString();
+            loginPresenter.login(email, password);
+        }
+    }
+
+    /**
+     * Checks the validity of the e-mail and password.
+     *
+     * @return A view to set the focus on in case of invalid input.
+     * null if the inputs are valid and further progress can be made
+     */
+    private View checkValidInput() {
         // Reset errors.
         mEmailView.setError(null);
         mPasswordView.setError(null);
@@ -270,18 +220,10 @@ public class LoginActivity extends AppCompatActivity implements ILoginScreen, Lo
             focusView = mEmailView;
             cancel = true;
         }
-
         if (cancel) {
-            // There was an error; don't attempt login and focus the first
-            // form field with an error.
-            focusView.requestFocus();
-        } else {
-            // Show a progress spinner, and kick off a background task to
-            // perform the user login attempt.
-            showProgress(true);
-            mAuthTask = new UserLoginTask(email, password);
-            mAuthTask.execute((Void) null);
+            return focusView;
         }
+        return null;
     }
 
     private boolean isEmailValid(String email) {
@@ -328,109 +270,5 @@ public class LoginActivity extends AppCompatActivity implements ILoginScreen, Lo
         }
     }
 
-    @Override
-    public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
-        return new CursorLoader(this,
-                // Retrieve data rows for the device user's 'profile' contact.
-                Uri.withAppendedPath(ContactsContract.Profile.CONTENT_URI,
-                        ContactsContract.Contacts.Data.CONTENT_DIRECTORY), ProfileQuery.PROJECTION,
-
-                // Select only email addresses.
-                ContactsContract.Contacts.Data.MIMETYPE +
-                        " = ?", new String[]{ContactsContract.CommonDataKinds.Email
-                .CONTENT_ITEM_TYPE},
-
-                // Show primary email addresses first. Note that there won't be
-                // a primary email address if the user hasn't specified one.
-                ContactsContract.Contacts.Data.IS_PRIMARY + " DESC");
-    }
-
-    @Override
-    public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
-        List<String> emails = new ArrayList<>();
-        cursor.moveToFirst();
-        while (!cursor.isAfterLast()) {
-            emails.add(cursor.getString(ProfileQuery.ADDRESS));
-            cursor.moveToNext();
-        }
-
-        addEmailsToAutoComplete(emails);
-    }
-
-    @Override
-    public void onLoaderReset(Loader<Cursor> cursorLoader) {
-
-    }
-
-    private void addEmailsToAutoComplete(List<String> emailAddressCollection) {
-        //Create adapter to tell the AutoCompleteTextView what to show in its dropdown list.
-        ArrayAdapter<String> adapter =
-                new ArrayAdapter<>(LoginActivity.this,
-                        android.R.layout.simple_dropdown_item_1line, emailAddressCollection);
-
-        mEmailView.setAdapter(adapter);
-    }
-
-
-    private interface ProfileQuery {
-        String[] PROJECTION = {
-                ContactsContract.CommonDataKinds.Email.ADDRESS,
-                ContactsContract.CommonDataKinds.Email.IS_PRIMARY,
-        };
-
-        int ADDRESS = 0;
-        int IS_PRIMARY = 1;
-    }
-
-    /**
-     * Represents an asynchronous login/registration task used to authenticate
-     * the user.
-     */
-    public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
-
-        private final String mEmail;
-        private final String mPassword;
-
-        UserLoginTask(String email, String password) {
-            mEmail = email;
-            mPassword = password;
-        }
-
-        @Override
-        protected Boolean doInBackground(Void... params) {
-            // attempt authentication against a network service.
-            //loginPresenter.login(mEmail, mPassword);
-
-
-            // register the new account here.
-            //loginPresenter.register(mEmail, mPassword);
-            return true;
-        }
-
-        @Override
-        protected void onPostExecute(final Boolean success) {
-            mAuthTask = null;
-            showProgress(false);
-
-
-
-            if (success) {
-                navigateToMainMenu(mEmail);
-                //finish();
-            }
-////            else if (ERROR_HAPPENED){
-////                ERROR_HAPPENED = false;
-////            }else {
-////                mPasswordView.setError(getString(R.string.error_incorrect_password));
-////                mPasswordView.requestFocus();
-////            }
-        }
-
-        @Override
-        protected void onCancelled() {
-            mAuthTask = null;
-            showProgress(false);
-        }
-    }
 }
 

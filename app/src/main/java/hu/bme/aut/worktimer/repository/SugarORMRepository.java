@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import hu.bme.aut.worktimer.model.orm.UserORMModel;
+import hu.bme.aut.worktimer.model.orm.WorkDayORMModel;
 
 /**
  * Database by sugar orm
@@ -16,8 +17,8 @@ import hu.bme.aut.worktimer.model.orm.UserORMModel;
  */
 
 class SugarORMRepository implements Repository {
-
     @Override
+
     public void open(Context context) {
         SugarContext.init(context);
     }
@@ -29,12 +30,24 @@ class SugarORMRepository implements Repository {
 
     @Override
     public List<UserORMModel> getUsers() {
-        return SugarRecord.listAll(UserORMModel.class);
+        List<UserORMModel> result = SugarRecord.listAll(UserORMModel.class);
+        for (UserORMModel user : result) {
+            user.setWorkdays(SugarRecord.find(WorkDayORMModel.class, "user = ?", user.getId().toString()));
+        }
+        return result;
     }
 
     @Override
     public void saveUser(UserORMModel user) {
-        SugarRecord.save(user);
+        if (user.getId() != null) {
+            SugarRecord.deleteAll(WorkDayORMModel.class, "user = ?", user.getId().toString());
+        }
+        long userid = user.save();
+        for (WorkDayORMModel wd : user.getWorkdays()) {
+            WorkDayORMModel svd = new WorkDayORMModel(wd.getCheckindate(), wd.getCheckoutdate());
+            svd.setUser(userid);
+            svd.save();
+        }
     }
 
     @Override
@@ -46,9 +59,9 @@ class SugarORMRepository implements Repository {
     public void updateUsers(List<UserORMModel> usersToUpdate) {
         List<UserORMModel> oldUsers = getUsers();
         List<UserORMModel> updateableUsers = new ArrayList<>(oldUsers.size());
-        for (UserORMModel old: oldUsers ) {
-            for(UserORMModel update: usersToUpdate)
-                if (update.getUsername() == old.getUsername()){
+        for (UserORMModel old : oldUsers) {
+            for (UserORMModel update : usersToUpdate)
+                if (update.getUsername() == old.getUsername()) {
                     updateableUsers.add(update);
                 }
         }
@@ -57,6 +70,6 @@ class SugarORMRepository implements Repository {
 
     @Override
     public boolean isInDB(UserORMModel user) {
-        return SugarRecord.findById(UserORMModel.class, new String[]{user.getUsername()})!=null;
+        return SugarRecord.findById(UserORMModel.class, new String[]{user.getUsername()}) != null;
     }
 }
