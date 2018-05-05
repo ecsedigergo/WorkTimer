@@ -195,6 +195,7 @@ paths:
   
 definitions:
   User:
+    description: "Handles user specific name and password pair with a list of workday"
     type: "object"
     properties:
       username:
@@ -209,6 +210,7 @@ definitions:
     - "username"
     - "password"
   WorkDay:
+    description: "Handles a workday with checkin and checkout dates"
     type: "object"
     properties:
       checkin:
@@ -220,6 +222,7 @@ definitions:
     required:
     - "checkin"
   WorkDays:
+    description: "Handles a list of workdays"
     type: "object"
     properties:
       workdays:
