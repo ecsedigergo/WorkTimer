@@ -1,10 +1,8 @@
 package hu.bme.aut.worktimer.interactor;
 
-import javax.inject.Singleton;
-
 import dagger.Module;
 import dagger.Provides;
-import hu.bme.aut.worktimer.interactor.User.UserInteractor;
+import hu.bme.aut.worktimer.interactor.user.UserInteractor;
 
 @Module
 public class InteractorModule {

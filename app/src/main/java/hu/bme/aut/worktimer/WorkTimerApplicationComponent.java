@@ -4,8 +4,8 @@ import javax.inject.Singleton;
 
 import dagger.Component;
 import hu.bme.aut.worktimer.interactor.InteractorModule;
-import hu.bme.aut.worktimer.interactor.User.UserInteractor;
-import hu.bme.aut.worktimer.network.NetworkModule;
+import hu.bme.aut.worktimer.interactor.user.UserInteractor;
+import hu.bme.aut.worktimer.mock.MockNetworkModule;
 import hu.bme.aut.worktimer.repository.RepositoryModule;
 import hu.bme.aut.worktimer.ui.UIModule;
 import hu.bme.aut.worktimer.ui.about.AboutActivity;
@@ -21,7 +21,7 @@ import hu.bme.aut.worktimer.ui.navigation.NavigationPresenter;
  */
 
 @Singleton
-@Component(modules = {NetworkModule.class, UIModule.class, InteractorModule.class, RepositoryModule.class})
+@Component(modules = {MockNetworkModule.class, UIModule.class, InteractorModule.class, RepositoryModule.class})
 public interface WorkTimerApplicationComponent {
     void inject(LoginActivity loginActivity);
 
