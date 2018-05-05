@@ -9,8 +9,15 @@ import java.util.Date;
 
 public class WorkDay {
     private Date checkin;
-
     private Date checkout;
+
+    public WorkDay() {
+    }
+
+    public WorkDay(Date checkin, Date checkout) {
+        this.checkin = checkin;
+        this.checkout = checkout;
+    }
 
     public void setCheckin(Date in) {
         checkin = in;

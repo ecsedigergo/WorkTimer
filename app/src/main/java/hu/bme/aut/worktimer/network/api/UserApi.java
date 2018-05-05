@@ -22,7 +22,7 @@ public interface UserApi {
   
   /**
    * Create user
-   * This can only be done by the logged in user.
+   * This can only be done by the not logged in user.
    * @param body Created user object
    * @return Call<Void>
    */
@@ -34,28 +34,29 @@ public interface UserApi {
 
   
   /**
-   * Logs user into the system
-   * 
-   * @param username The user name for login
-   * @param password The password for login in clear text
-   * @return Call<String>
+   * Logs user into
+   * post query for logging in user
+   * @param user User to be logged in
+   * @return Call<Void>
    */
   
-  @GET("user/login")
-  Call<String> loginUser(
-    @Query("username") String username, @Query("password") String password
+  @POST("user/login")
+  Call<Void> loginUser(
+    @Body User user
   );
 
   
   /**
-   * Logs out current logged in user session
-   * 
+   * Logs user out
+   * Logs out a user, who&#39;s username is in the body
+   * @param user User to be logged out
    * @return Call<Void>
    */
   
-  @GET("user/logout")
-  Call<Void> logoutUser();
-    
+  @POST("user/logout")
+  Call<Void> logoutUser(
+    @Body User user
+  );
 
   
   /**

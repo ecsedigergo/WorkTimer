@@ -7,6 +7,7 @@ import java.util.List;
 import hu.bme.aut.worktimer.model.orm.UserORMModel;
 
 /**
+ * Repository interface for handling user actions in db
  * Created by ecsedigergo on 2018. 04. 22..
  */
 
