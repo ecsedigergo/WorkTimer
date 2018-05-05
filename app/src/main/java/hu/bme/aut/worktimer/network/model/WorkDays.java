@@ -11,7 +11,7 @@ import java.util.List;
 import com.google.gson.annotations.SerializedName;
 
 
-@ApiModel(description = "")
+@ApiModel(description = "Handles a list of workdays")
 public class WorkDays {
 
     @SerializedName("workdays")

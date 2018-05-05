@@ -1,5 +1,6 @@
 package hu.bme.aut.worktimer.model.orm;
 
+import com.orm.SugarRecord;
 import com.orm.dsl.Table;
 
 import java.util.Date;
@@ -9,12 +10,21 @@ import java.util.Date;
  * Created by ecsedigergo on 2018. 04. 22..
  */
 @Table
-class WorkDayORMModel {
+public class WorkDayORMModel extends SugarRecord {
+    private Long user;
     private Date checkindate;
     private Date checkoutdate;
 
-    public WorkDayORMModel(Date checkindate) {
+    public WorkDayORMModel() {
+    }
+
+    public WorkDayORMModel(Date checkindate, Date checkoutdate) {
         this.checkindate = checkindate;
+        this.checkoutdate = checkoutdate;
+    }
+
+    public void setUser(Long user) {
+        this.user = user;
     }
 
     public Date getCheckindate() {
@@ -31,5 +41,14 @@ class WorkDayORMModel {
 
     public void setCheckoutdate(Date checkoutdate) {
         this.checkoutdate = checkoutdate;
+    }
+
+    @Override
+    public String toString() {
+        return "WorkDayORMModel{" +
+                "user=" + user +
+                ", checkindate=" + checkindate +
+                ", checkoutdate=" + checkoutdate +
+                '}';
     }
 }

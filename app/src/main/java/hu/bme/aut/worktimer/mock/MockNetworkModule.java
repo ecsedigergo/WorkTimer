@@ -24,7 +24,7 @@ public class MockNetworkModule {
     @Provides
     @Singleton
     public OkHttpClient provideOkHttpClient(OkHttpClient.Builder builder){
-        builder.interceptors().add(3, new Interceptor() {
+        builder.interceptors().add(new Interceptor() {
             @Override
             public Response intercept(Chain chain) throws IOException {
                 Request req = chain.request();
@@ -48,8 +48,8 @@ public class MockNetworkModule {
 
     @Provides
     @Singleton
-    public UserApi provideUserApi(){
-        return networkModule.provideUserApi();
+    public UserApi provideUserApi(Retrofit retrofit){
+        return networkModule.provideUserApi(retrofit);
     }
 
 }
