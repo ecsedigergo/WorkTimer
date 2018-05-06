@@ -276,9 +276,17 @@ public class NavigationActivity extends AppCompatActivity
         Toast.makeText(getApplicationContext(), "Network error: " + message, Toast.LENGTH_LONG).show();
     }
 
+    private void validationError(String message) {
+        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
+    }
+
     @Override
     public void addWorkDayFailed(String message) {
-        networkError(message);
+        if (message.contains("Validation:")){
+            validationError(message);
+        }else{
+            networkError(message);
+        }
     }
 
     //Reload the workdays for the ORMUser and for the adapter also
