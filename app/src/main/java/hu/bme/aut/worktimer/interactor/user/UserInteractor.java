@@ -99,14 +99,30 @@ public class UserInteractor {
     }
 
     public void addWorkDay(User user, WorkDay workDay) {
+
         AddWorkDayEvent event = new AddWorkDayEvent();
-        try {
-            Call<Void> call = userApi.addWorkDay(user.getUsername(), workDay);
-            Response<Void> response = call.execute();
-            event.setCode(response.code());
-        } catch (Exception ioe) {
-            event.setThrowable(ioe);
+        if (checkIsValidWorkDay(workDay)) {
+            try {
+                Call<Void> call = userApi.addWorkDay(user.getUsername(), workDay);
+                Response<Void> response = call.execute();
+                event.setCode(response.code());
+            } catch (Exception ioe) {
+                event.setThrowable(ioe);
+            }
+        } else {
+            //put some->validation error in the event!
+            event.setThrowable(new Throwable("Validation: Workday check times are not valid."));
         }
         bus.post(event);
+    }
+
+    private boolean checkIsValidWorkDay(WorkDay workDay) {
+        if (workDay.getCheckin().compareTo(workDay.getCheckout()) <= 0) {
+            //OK
+            return true;
+        } else {
+            //NOT OK
+            return false;
+        }
     }
 }
