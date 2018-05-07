@@ -33,6 +33,9 @@
         <meta-data
             android:name="DOMAIN_PACKAGE_NAME"
             android:value="hu.bme.aut.worktimer.model.orm" />
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="7b12e0a70c520b067be5a20a3f41491f5fb8642c" />
     </application>
 
 </manifest>

@@ -2,6 +2,8 @@ package hu.bme.aut.worktimer;
 
 import android.app.Application;
 
+import com.crashlytics.android.Crashlytics;
+import io.fabric.sdk.android.Fabric;
 import javax.inject.Inject;
 
 import hu.bme.aut.worktimer.repository.Repository;
@@ -20,6 +22,7 @@ public class WorkTimerApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        Fabric.with(this, new Crashlytics());
         injector = DaggerWorkTimerApplicationComponent.builder().
                 uIModule(new UIModule(this))
                 .build();

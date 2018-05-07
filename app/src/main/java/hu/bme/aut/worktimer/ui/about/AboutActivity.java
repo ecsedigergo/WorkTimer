@@ -3,6 +3,7 @@ package hu.bme.aut.worktimer.ui.about;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
 
 import javax.inject.Inject;
 
@@ -21,5 +22,8 @@ public class AboutActivity extends AppCompatActivity implements IAboutScreen {
 
         WorkTimerApplication.injector.inject(this);
 
+    }
+    public void forceCrash(View view){
+        throw new RuntimeException("Crash forced! Thanks.");
     }
 }
