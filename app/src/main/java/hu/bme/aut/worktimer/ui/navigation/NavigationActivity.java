@@ -5,6 +5,7 @@ import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +21,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
+
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -42,6 +46,7 @@ import hu.bme.aut.worktimer.ui.login.LoginActivity;
 public class NavigationActivity extends AppCompatActivity
         implements INavigationScreen, NavigationView.OnNavigationItemSelectedListener {
     public static final String EXTRA_USERNAME = "username";
+    private Tracker mTracker;
 
     private class WorkDayAdapter extends BaseAdapter {
 
@@ -100,6 +105,10 @@ public class NavigationActivity extends AppCompatActivity
     @Override
     protected void onStart() {
         super.onStart();
+
+        //Log.i(TAG, "Setting screen name: " + name);
+        mTracker.setScreenName("Image~" + "NavigationActivity");
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
     }
 
     @Override
@@ -165,6 +174,10 @@ public class NavigationActivity extends AppCompatActivity
                         calendar.get(Calendar.YEAR),
                         calendar.get(Calendar.MONTH),
                         calendar.get(Calendar.DAY_OF_MONTH)).show();
+                mTracker.send(new HitBuilders.EventBuilder()
+                        .setCategory("Action")
+                        .setAction("Share")
+                        .build());
             }
         });
 
@@ -186,6 +199,10 @@ public class NavigationActivity extends AppCompatActivity
         if (!setCachedWorkDays()) {
             navigationPresenter.getWorkDays(mUserEmail);
         }
+
+        // Obtain the shared Tracker instance.
+        WorkTimerApplication application = (WorkTimerApplication) getApplication();
+        mTracker = application.getDefaultTracker();
     }
 
     //Determines if there is a cached workday list for the users and sets that to the adapter

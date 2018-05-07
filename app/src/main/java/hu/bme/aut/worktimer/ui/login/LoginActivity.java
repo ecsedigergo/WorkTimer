@@ -32,6 +32,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
+
 import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -51,12 +54,16 @@ import static android.Manifest.permission.READ_CONTACTS;
 public class LoginActivity extends AppCompatActivity implements ILoginScreen {
     @Inject
     LoginPresenter loginPresenter;
+    private Tracker mTracker;
 
 
     @Override
     protected void onStart() {
         super.onStart();
         loginPresenter.attachScreen(this);
+
+        mTracker.setScreenName("Image~" + "LoginActivity");
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
     }
 
 
@@ -141,6 +148,10 @@ public class LoginActivity extends AppCompatActivity implements ILoginScreen {
 
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
+
+        // Obtain the shared Tracker instance.
+        WorkTimerApplication application = (WorkTimerApplication) getApplication();
+        mTracker = application.getDefaultTracker();
     }
 
     private void attemptRegister() {
